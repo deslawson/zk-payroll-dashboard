@@ -1,6 +1,8 @@
-import { Bell, Search, User } from "lucide-react";
+import { Bell, Search, User } from 'lucide-react';
+import { ROLE_LABELS } from '@/lib/auth/roles';
+import type { UserRole } from '@/types';
 
-function Header() {
+function Header({ role }: { role: UserRole }) {
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-white shadow-sm border-b">
       <div className="flex items-center" role="search">
@@ -12,7 +14,7 @@ function Header() {
           id="global-search"
           className="ml-2 outline-none bg-transparent placeholder-gray-400 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded"
           type="search"
-          placeholder="Search..."
+          placeholder={`Search ${ROLE_LABELS[role].toLowerCase()} workspace...`}
         />
       </div>
       <div className="flex items-center space-x-4">
@@ -33,7 +35,7 @@ function Header() {
           >
             <User className="w-5 h-5 text-gray-600" />
           </div>
-          <span className="text-sm font-medium text-gray-700">Admin</span>
+          <span className="text-sm font-medium text-gray-700">{ROLE_LABELS[role]}</span>
         </div>
       </div>
     </header>
