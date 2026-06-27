@@ -1,4 +1,4 @@
-import { Employee, Company, PayrollTransaction, PayrollRun } from "@/types/models";
+import { Employee, Company, PayrollTransaction, PayrollRun, ViewKey } from "@/types/models";
 
 export const MOCK_EMPLOYEES: Employee[] = [
   {
@@ -79,3 +79,29 @@ export const MOCK_PAYROLL_RUNS: PayrollRun[] = MOCK_TRANSACTIONS.map(tx => ({
   executedAt: tx.status === "verified" ? tx.timestamp : null,
   transactionHash: tx.txHash || null,
 }));
+
+export const MOCK_VIEW_KEYS: ViewKey[] = [
+  {
+    id: "vk_001",
+    keyId: "vk_audit_abc123",
+    auditorName: "Sarah Chen",
+    auditorOrg: "Deloitte",
+    scope: "full-audit",
+    grantedBy: "GDQP2KPQGKIHYJGXNUIYOMHARUARCA7DJT5FO2FFOOKY3B2WSQHG4W37",
+    createdAt: "2025-01-15T10:00:00Z",
+    expiresAt: "2026-01-15T10:00:00Z",
+    isActive: true,
+  },
+  {
+    id: "vk_002",
+    keyId: "vk_audit_def456",
+    auditorName: "James Okafor",
+    auditorOrg: "KPMG",
+    scope: "read-only",
+    grantedBy: "GDQP2KPQGKIHYJGXNUIYOMHARUARCA7DJT5FO2FFOOKY3B2WSQHG4W37",
+    createdAt: "2025-06-01T08:00:00Z",
+    expiresAt: "2025-12-01T08:00:00Z",
+    isActive: false,
+    revokedAt: "2025-11-15T14:30:00Z",
+  },
+];

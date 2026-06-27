@@ -45,3 +45,30 @@ export interface PayrollRun extends PayrollTransaction {
   executedAt?: string | null;
   transactionHash?: string | null;
 }
+
+export interface ViewKey {
+  id: string;
+  keyId: string;
+  auditorName: string;
+  auditorOrg: string;
+  scope: "read-only" | "full-audit";
+  grantedBy: string;
+  createdAt: string;
+  expiresAt: string;
+  isActive: boolean;
+  revokedAt?: string | null;
+}
+
+export type PayrollWizardStep = "review" | "proof" | "confirm" | "submit";
+
+export interface PayrollWizardState {
+  currentStep: PayrollWizardStep;
+  employeeIds: string[];
+  totalAmount: number;
+  proof: string | null;
+  proofStatus: "idle" | "generating" | "success" | "error";
+  proofError: string | null;
+  submissionStatus: "idle" | "submitting" | "success" | "error";
+  submissionError: string | null;
+  transactionHash: string | null;
+}

@@ -17,8 +17,19 @@ pnpm dev
 pnpm dev          # Start dev server
 pnpm build        # Build for production
 pnpm lint         # Lint
-pnpm test         # Run tests
+pnpm test         # Run all unit tests
+pnpm test:smoke   # Run smoke tests for critical user journeys
 ```
+
+## Smoke Tests
+
+The `__tests__/smoke/` directory contains automated tests covering the highest-value dashboard journeys:
+
+- **Wallet Connection** — connect, disconnect, loading, and error states
+- **Payroll Initiation** — summary cards, proof generation flow
+- **Dashboard Status** — history table, status visibility
+
+Run them with `pnpm test:smoke`. CI runs these automatically on every push and PR.
 
 ## Areas of Contribution
 
