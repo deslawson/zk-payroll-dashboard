@@ -1,4 +1,4 @@
-import { Home, Users, Settings, History, Shield, Play } from "lucide-react";
+import { Home, Users, Settings, History, Shield, Play, Building2, Landmark } from "lucide-react";
 
 function Sidebar() {
     return (
@@ -23,9 +23,17 @@ function Sidebar() {
                     <History className="w-5 h-5 mr-3" />
                     History
                 </a>
+                <a className="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900" href="/treasury">
+                    <Landmark className="w-5 h-5 mr-3" />
+                    Treasury
+                </a>
                 <a className="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900" href="/compliance">
                     <Shield className="w-5 h-5 mr-3" />
                     Compliance
+                </a>
+                <a className="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900" href="/setup">
+                    <Building2 className="w-5 h-5 mr-3" />
+                    Company Setup
                 </a>
                 <a className="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900" href="/settings">
                     <Settings className="w-5 h-5 mr-3" />

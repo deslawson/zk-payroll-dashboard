@@ -7,6 +7,7 @@ export interface Employee {
   salary: number;
   salaryCommitment: string;
   isActive: boolean;
+  status?: "active" | "inactive" | "pending";
   startDate: string;
   lastPayment?: string;
 }

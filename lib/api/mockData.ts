@@ -8,8 +8,9 @@ export const MOCK_EMPLOYEES: Employee[] = [
     email: "alice@zkpayroll.io",
     department: "Engineering",
     salary: 5000,
-    salaryCommitment: "0xabc123def456", // ZK commitment hash
+    salaryCommitment: "0xabc123def456",
     isActive: true,
+    status: "active",
     startDate: "2024-01-15T00:00:00Z",
     lastPayment: "2025-02-28T09:01:00Z",
   },
@@ -22,8 +23,34 @@ export const MOCK_EMPLOYEES: Employee[] = [
     salary: 4500,
     salaryCommitment: "0xdef789ghi012",
     isActive: true,
+    status: "active",
     startDate: "2024-02-01T00:00:00Z",
     lastPayment: "2025-02-28T09:01:05Z",
+  },
+  {
+    id: "emp_003",
+    address: "GBVXCPHJMZ5HZJMBBP3YMBM6HXKH3JRXJBHXJHXJHXJHXJHXJHXJHX",
+    name: "Amara Diallo",
+    email: "amara@zkpayroll.io",
+    department: "Finance",
+    salary: 4800,
+    salaryCommitment: "0xghi345jkl678",
+    isActive: false,
+    status: "inactive",
+    startDate: "2023-08-01T00:00:00Z",
+    lastPayment: "2024-11-30T09:00:00Z",
+  },
+  {
+    id: "emp_004",
+    address: "GCZJM2ZPKZM5LZPM2CZJM2ZPKZM5LZPM2CZJM2ZPKZM5LZPM2CZJM2",
+    name: "Kofi Boateng",
+    email: "kofi@zkpayroll.io",
+    department: "Engineering",
+    salary: 5200,
+    salaryCommitment: "0xmno901pqr234",
+    isActive: true,
+    status: "pending",
+    startDate: "2025-03-01T00:00:00Z",
   },
 ];
 
@@ -79,6 +106,12 @@ export const MOCK_PAYROLL_RUNS: PayrollRun[] = MOCK_TRANSACTIONS.map(tx => ({
   executedAt: tx.status === "verified" ? tx.timestamp : null,
   transactionHash: tx.txHash || null,
 }));
+
+export const MOCK_TREASURY_BALANCE = {
+  balance: 45000,
+  projectedPayroll: 19500,
+  lastFunded: "2025-02-15T10:00:00Z",
+};
 
 export const MOCK_VIEW_KEYS: ViewKey[] = [
   {
