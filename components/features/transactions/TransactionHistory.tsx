@@ -7,6 +7,11 @@ import {
   Download,
   Filter,
   X,
+  Eye,
+} from "lucide-react";
+import { MOCK_TRANSACTIONS, MOCK_EMPLOYEES } from "@/lib/api/mockData";
+import type { PayrollTransaction } from "@/types";
+import TransactionDetailDrawer from "./TransactionDetailDrawer";
   Printer,
   Save,
   Bookmark,
@@ -50,14 +55,22 @@ function generateViewId(): string {
 function toCsvRow(values: string[]): string {
   return values
     .map((v) => {
-      const needsQuoting = v.includes(",") || v.includes('"') || v.includes("\n");
+      const needsQuoting =
+        v.includes(",") || v.includes('"') || v.includes("\n");
       return needsQuoting ? `"${v.replace(/"/g, '""')}"` : v;
     })
     .join(",");
 }
 
 function exportToCsv(rows: PayrollTransaction[]): string {
-  const header = toCsvRow(["ID", "Date", "Status", "Total Amount", "Employees", "Tx Hash"]);
+  const header = toCsvRow([
+    "ID",
+    "Date",
+    "Status",
+    "Total Amount",
+    "Employees",
+    "Tx Hash",
+  ]);
   const body = rows
     .map((tx) =>
       toCsvRow([
@@ -92,6 +105,14 @@ const STATUS_STYLES: Record<string, string> = {
 function TransactionHistory() {
   const [filters, setFilters] = useState<Filters>(initialFilters);
   const [showFilters, setShowFilters] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<PayrollTransaction | null>(null);
+  const [detailDrawerOpen, setDetailDrawerOpen] = useState(false);
+
+  const handleViewDetails = (transaction: PayrollTransaction) => {
+    setSelectedTransaction(transaction);
+    setDetailDrawerOpen(true);
+  };
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -443,6 +464,117 @@ function TransactionHistory() {
           </div>
         )}
 
+        <table className="w-full text-left">
+          <caption className="sr-only">
+            Payroll transactions with filtering and export
+          </caption>
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-xs font-medium text-gray-600 uppercase"
+              >
+                Type
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-xs font-medium text-gray-600 uppercase"
+              >
+                Recipient
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-xs font-medium text-gray-600 uppercase"
+              >
+                Amount
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-xs font-medium text-gray-600 uppercase"
+              >
+                Status
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-xs font-medium text-gray-600 uppercase"
+              >
+                Date
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-xs font-medium text-gray-600 uppercase"
+              >
+                <span className="sr-only">Actions</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200" aria-live="polite">
+            {filtered.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={6}
+                  className="px-6 py-8 text-center text-sm text-gray-500"
+                >
+                  No transactions match the current filters.
+                </td>
+              </tr>
+            ) : (
+              filtered.map((tx) => (
+                <tr
+                  key={tx.id}
+                  className="hover:bg-gray-50 transition-colors cursor-pointer"
+                  onClick={() => handleViewDetails(tx)}
+                >
+                  <td className="px-6 py-4 flex items-center">
+                    {tx.totalAmount > 0 ? (
+                      <ArrowDownLeft
+                        className="w-4 h-4 text-green-600 mr-2"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <ArrowUpRight
+                        className="w-4 h-4 text-red-600 mr-2"
+                        aria-hidden="true"
+                      />
+                    )}
+                    Payout
+                  </td>
+                  <td className="px-6 py-4 text-gray-900">
+                    {tx.employeeCount} employees
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900">
+                    ${tx.totalAmount.toLocaleString()}
+                  </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded-full ${
+                        tx.status === "verified"
+                          ? "bg-green-100 text-green-800"
+                          : tx.status === "pending"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {tx.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">
+                    {new Date(tx.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleViewDetails(tx);
+                      }}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-md transition-colors"
+                      aria-label={`View details for transaction ${tx.id}`}
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      Details
+                    </button>
+                  </td>
         {/* ── Active filter bar with save button ──────────────────── */}
         {hasFiltersApplied && (
           <div className="px-6 py-2 bg-indigo-50 border-b flex items-center justify-between">
@@ -648,6 +780,12 @@ function TransactionHistory() {
           </>
         )}
       </div>
+
+      <TransactionDetailDrawer
+        transaction={selectedTransaction}
+        open={detailDrawerOpen}
+        onOpenChange={setDetailDrawerOpen}
+      />
     </section>
   );
 }
