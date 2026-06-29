@@ -1,15 +1,17 @@
 import { describe, it, expect, vi } from "vitest";
+
+vi.mock("@/components/providers/StellarProvider", () => ({
+  EXPECTED_NETWORK: "TESTNET",
+  useStellar: () => ({
+    publicKey: "GTEST123",
+  }),
+}));
+
 import { render, screen } from "@testing-library/react";
 import PayrollWizard from "@/components/features/payroll/PayrollWizard";
 import PayrollRunDetail from "@/components/features/payroll/PayrollRunDetail";
 import PayrollComparison from "@/components/features/payroll/PayrollComparison";
 import type { PayrollRun } from "@/types/models";
-
-vi.mock("@/components/providers/StellarProvider", () => ({
-  useStellar: () => ({
-    publicKey: "GTEST123",
-  }),
-}));
 
 const mockPayrollRuns: PayrollRun[] = [
   {
@@ -51,7 +53,7 @@ describe("Visual Regression - Payroll Flow States", () => {
       const { container } = render(
         <PayrollRunDetail run={mockPayrollRuns[0]} />,
       );
-      expect(screen.getByText("verified")).toBeInTheDocument();
+      expect(screen.getByText("Verified")).toBeInTheDocument();
       expect(container).toMatchSnapshot();
     });
   });

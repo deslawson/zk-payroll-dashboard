@@ -170,6 +170,7 @@ export default function Sidebar({ role }: { role?: UserRole } = {}) {
               <h1 className="text-xl font-bold text-gray-800">ZK Payroll</h1>
               <button
                 type="button"
+                autoFocus
                 onClick={() => setOpen(false)}
                 className="p-1 rounded-md text-gray-500 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                 aria-label="Close navigation menu"
