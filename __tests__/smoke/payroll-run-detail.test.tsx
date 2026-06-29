@@ -25,12 +25,12 @@ describe("Payroll Run Detail", () => {
     expect(screen.getByText("abc123def456")).toBeInTheDocument();
   });
 
-  it("links back to the schedule page", () => {
+  it("links back to history page", () => {
     render(<PayrollRunDetail run={MOCK_PAYROLL_RUNS[0]} />);
 
-    expect(screen.getByRole("link", { name: /back to schedule/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /view transaction history/i })).toHaveAttribute(
       "href",
-      "/payroll/schedule",
+      "/history",
     );
   });
 });

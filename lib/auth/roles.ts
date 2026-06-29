@@ -73,10 +73,12 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
 ];
 
 export const ROUTE_ROLE_RULES: Array<{ prefix: string; roles: UserRole[] }> = [
-  { prefix: '/employees', roles: ['admin'] },
+  { prefix: '/employees/add', roles: ['admin'] },
+  { prefix: '/employees', roles: ['admin', 'operator'] },
   { prefix: '/payroll/execute', roles: ['admin', 'operator'] },
   { prefix: '/payroll/exceptions', roles: ['admin', 'operator', 'auditor'] },
   { prefix: '/payroll/runs', roles: ['admin', 'operator', 'auditor'] },
+  { prefix: '/payroll/run', roles: ['admin'] },
   { prefix: '/treasury', roles: ['admin'] },
   { prefix: '/compliance', roles: ['admin', 'auditor'] },
   { prefix: '/setup', roles: ['admin'] },

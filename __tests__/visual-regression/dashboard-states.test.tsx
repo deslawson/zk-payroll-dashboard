@@ -13,28 +13,55 @@ vi.mock("@/components/providers/StellarProvider", () => ({
   }),
 }));
 
+let mockWalletState = {
+  isConnected: true,
+  isLoading: false,
+  publicKey: "GTEST123",
+  network: "TESTNET",
+};
+
+let mockCompany = {
+  id: "test-company",
+  name: "Test Company",
+  admin: "GTEST123",
+  treasury: "GTREASURY",
+  employeeCount: 10,
+  isActive: true,
+};
+
 vi.mock("@/stores/walletStore", () => ({
-  useWalletStore: () => ({
-    isConnected: true,
-    isLoading: false,
-    publicKey: "GTEST123",
-  }),
+  useWalletStore: (selector?: (s: any) => any) => {
+    if (selector) return selector(mockWalletState);
+    return mockWalletState;
+  },
 }));
 
 vi.mock("@/stores/company", () => ({
-  useCompanyStore: () => ({
-    company: {
+  useCompanyStore: (selector?: (s: any) => any) => {
+    const state = { company: mockCompany };
+    if (selector) return selector(state);
+    return state;
+  },
+}));
+
+describe("Visual Regression - Dashboard States", () => {
+  beforeEach(() => {
+    mockWalletState = {
+      isConnected: true,
+      isLoading: false,
+      publicKey: "GTEST123",
+      network: "TESTNET",
+    };
+    mockCompany = {
       id: "test-company",
       name: "Test Company",
       admin: "GTEST123",
       treasury: "GTREASURY",
       employeeCount: 10,
       isActive: true,
-    },
-  }),
-}));
+    };
+  });
 
-describe("Visual Regression - Dashboard States", () => {
   describe("Dashboard Home - Complete State", () => {
     it("renders dashboard with all components visible", () => {
       const { container } = render(<DashboardHome />);
@@ -47,13 +74,12 @@ describe("Visual Regression - Dashboard States", () => {
 
   describe("Dashboard Home - No Wallet State", () => {
     it("renders wallet connection prompt", () => {
-      vi.doMock("@/stores/walletStore", () => ({
-        useWalletStore: () => ({
-          isConnected: false,
-          isLoading: false,
-          publicKey: null,
-        }),
-      }));
+      mockWalletState = {
+        isConnected: false,
+        isLoading: false,
+        publicKey: null,
+        network: "TESTNET",
+      };
 
       const { container } = render(<DashboardHome />);
 
@@ -66,11 +92,7 @@ describe("Visual Regression - Dashboard States", () => {
 
   describe("Dashboard Home - No Company State", () => {
     it("renders company setup required state", () => {
-      vi.doMock("@/stores/company", () => ({
-        useCompanyStore: () => ({
-          company: null,
-        }),
-      }));
+      mockCompany = null as any;
 
       const { container } = render(<DashboardHome />);
 
@@ -148,20 +170,19 @@ describe("Visual Regression - Dashboard States", () => {
     it("renders checklist with some items completed", () => {
       const { container } = render(<OnboardingChecklistPanel />);
 
-      expect(screen.getByText("Getting Started")).toBeInTheDocument();
+      expect(screen.getByText("Action Required: Onboarding Setup")).toBeInTheDocument();
       expect(container).toMatchSnapshot();
     });
   });
 
   describe("Dashboard Home - Loading State", () => {
     it("renders loading spinner during wallet connection", () => {
-      vi.doMock("@/stores/walletStore", () => ({
-        useWalletStore: () => ({
-          isConnected: false,
-          isLoading: true,
-          publicKey: null,
-        }),
-      }));
+      mockWalletState = {
+        isConnected: false,
+        isLoading: true,
+        publicKey: null,
+        network: "TESTNET",
+      };
 
       const { container } = render(<DashboardHome />);
 

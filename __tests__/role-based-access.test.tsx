@@ -39,6 +39,12 @@ const employeeSession: SessionPayload = {
   expiresAt: Date.now() + 86_400_000,
 };
 
+const auditorSession: SessionPayload = {
+  publicKey: EMPLOYEE_KEY,
+  role: 'auditor',
+  expiresAt: Date.now() + 86_400_000,
+};
+
 function createRequest(path: string, hasCookie: boolean = false): NextRequest {
   const request = new NextRequest(new URL(`http://localhost:3000${path}`));
   if (hasCookie) {
@@ -173,9 +179,9 @@ describe('Middleware route protection', () => {
     expect(location).toContain('/login');
   });
 
-  // /history is NOT in PROTECTED_PREFIXES, so passes without auth
-  it('allows unauthenticated access to /history (not in protected prefixes)', async () => {
-    const res = await runMiddleware('/history', null);
+  // /about is NOT in PROTECTED_PREFIXES, so passes without auth
+  it('allows unauthenticated access to /about (not in protected prefixes)', async () => {
+    const res = await runMiddleware('/about', null);
     expect(res.status).toBe(200);
   });
 
@@ -202,17 +208,17 @@ describe('Middleware route protection', () => {
   });
 
   it('allows employee access to /history (Auditor flow)', async () => {
-    const res = await runMiddleware('/history', employeeSession);
+    const res = await runMiddleware('/history', auditorSession);
     expect(res.status).toBe(200);
   });
 
   it('allows employee access to /compliance (Auditor flow)', async () => {
-    const res = await runMiddleware('/compliance', employeeSession);
+    const res = await runMiddleware('/compliance', auditorSession);
     expect(res.status).toBe(200);
   });
 
   it('allows employee access to /api/transactions (Auditor flow)', async () => {
-    const res = await runMiddleware('/api/transactions', employeeSession);
+    const res = await runMiddleware('/api/transactions', auditorSession);
     expect(res.status).toBe(200);
   });
 
@@ -221,7 +227,7 @@ describe('Middleware route protection', () => {
   it('redirects employee away from admin-only page /payroll/run', async () => {
     const res = await runMiddleware('/payroll/run', employeeSession);
     expect(res.status).toBe(307);
-    expect(res.headers.get('location')).toContain('/dashboard');
+    expect(res.headers.get('location')).toBe('http://localhost:3000/');
   });
 
   // /api/payroll/run doesn't match ADMIN_PATHS prefix '/payroll/run'
@@ -233,13 +239,13 @@ describe('Middleware route protection', () => {
   it('redirects employee away from admin-only API path /payroll/run (no /api prefix)', async () => {
     const res = await runMiddleware('/payroll/run', employeeSession);
     expect(res.status).toBe(307);
-    expect(res.headers.get('location')).toContain('/dashboard');
+    expect(res.headers.get('location')).toBe('http://localhost:3000/');
   });
 
   it('redirects employee away from admin-only page /employees/add', async () => {
     const res = await runMiddleware('/employees/add', employeeSession);
     expect(res.status).toBe(307);
-    expect(res.headers.get('location')).toContain('/dashboard');
+    expect(res.headers.get('location')).toBe('http://localhost:3000/');
   });
 
   // ── Admin-only routes – admin allowed ───────────────────────────────────
