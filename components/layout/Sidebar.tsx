@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Users, Settings, History, Shield, Play, Building2, Landmark } from 'lucide-react';
+import { Home, Users, Settings, History, Shield, Play, Building2, Landmark, FileSearch, AlertTriangle, ClipboardList, Upload } from 'lucide-react';
 import { getNavigationForRole, ROLE_LABELS } from '@/lib/auth/roles';
 import type { NavigationItem } from '@/lib/auth/roles';
 import type { UserRole } from '@/types';
@@ -17,6 +17,10 @@ const icons: Record<NavigationItem['icon'], React.ComponentType<{ className?: st
   play: Play,
   building: Building2,
   treasury: Landmark,
+  'file-search': FileSearch,
+  alert: AlertTriangle,
+  clipboard: ClipboardList,
+  upload: Upload,
 };
 
 function Sidebar({ role }: { role: UserRole }) {
@@ -78,6 +82,9 @@ import {
   Landmark,
   Menu,
   X,
+  AlertTriangle,
+  FileSearch,
+  ClipboardList,
 } from "lucide-react";
 
 const NAV_LINKS = [
@@ -88,6 +95,7 @@ const NAV_LINKS = [
   { href: "/treasury", icon: Landmark, label: "Treasury" },
   { href: "/compliance", icon: Shield, label: "Compliance" },
   { href: "/setup", icon: Building2, label: "Company Setup" },
+  { href: "/incidents", icon: AlertTriangle, label: "Incidents" },
   { href: "/settings", icon: Settings, label: "Settings" },
 ];
 
@@ -165,7 +173,6 @@ function Sidebar() {
         <NavLinks />
       </div>
     </>
->
   );
 }
 
