@@ -524,7 +524,6 @@ function TransactionHistory() {
             <ul
               className="md:hidden divide-y divide-gray-100"
               aria-label="Payroll transactions"
-              role="list"
             >
               {filtered.length === 0 ? (
                 <li className="px-4 py-8 text-center text-sm text-gray-500">
