@@ -7,15 +7,18 @@ import {
   Download,
   Filter,
   X,
+  Eye,
   Printer,
   Save,
   Bookmark,
   Pencil,
   Trash2,
   Check,
+  ExternalLink,
 } from "lucide-react";
 import { MOCK_TRANSACTIONS, MOCK_EMPLOYEES } from "@/lib/api/mockData";
 import type { PayrollTransaction } from "@/types";
+import TransactionDetailDrawer from "./TransactionDetailDrawer";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 type StatusFilter = "all" | "verified" | "pending" | "failed";
@@ -50,14 +53,22 @@ function generateViewId(): string {
 function toCsvRow(values: string[]): string {
   return values
     .map((v) => {
-      const needsQuoting = v.includes(",") || v.includes('"') || v.includes("\n");
+      const needsQuoting =
+        v.includes(",") || v.includes('"') || v.includes("\n");
       return needsQuoting ? `"${v.replace(/"/g, '""')}"` : v;
     })
     .join(",");
 }
 
 function exportToCsv(rows: PayrollTransaction[]): string {
-  const header = toCsvRow(["ID", "Date", "Status", "Total Amount", "Employees", "Tx Hash"]);
+  const header = toCsvRow([
+    "ID",
+    "Date",
+    "Status",
+    "Total Amount",
+    "Employees",
+    "Tx Hash",
+  ]);
   const body = rows
     .map((tx) =>
       toCsvRow([
@@ -92,6 +103,14 @@ const STATUS_STYLES: Record<string, string> = {
 function TransactionHistory() {
   const [filters, setFilters] = useState<Filters>(initialFilters);
   const [showFilters, setShowFilters] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<PayrollTransaction | null>(null);
+  const [detailDrawerOpen, setDetailDrawerOpen] = useState(false);
+
+  const handleViewDetails = (transaction: PayrollTransaction) => {
+    setSelectedTransaction(transaction);
+    setDetailDrawerOpen(true);
+  };
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -536,6 +555,9 @@ function TransactionHistory() {
                   <th scope="col" className="px-6 py-3 text-xs font-medium text-gray-400 uppercase">Amount</th>
                   <th scope="col" className="px-6 py-3 text-xs font-medium text-gray-400 uppercase">Status</th>
                   <th scope="col" className="px-6 py-3 text-xs font-medium text-gray-400 uppercase">Date</th>
+                  <th scope="col" className="px-6 py-3 text-xs font-medium text-gray-400 uppercase">
+                    <span className="sr-only">Actions</span>
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -555,6 +577,9 @@ function TransactionHistory() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="h-4 bg-gray-200 rounded w-24"></div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="h-8 bg-gray-200 rounded w-20"></div>
                     </td>
                   </tr>
                 ))}
@@ -599,13 +624,19 @@ function TransactionHistory() {
                   >
                     Date
                   </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-xs font-medium text-gray-600 uppercase"
+                  >
+                    <span className="sr-only">Actions</span>
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200" aria-live="polite">
                 {filtered.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={5}
+                      colSpan={6}
                       className="px-6 py-8 text-center text-sm text-gray-500"
                     >
                       {hasFiltersApplied
@@ -648,6 +679,30 @@ function TransactionHistory() {
                       <td className="px-6 py-4 text-gray-600">
                         {new Date(tx.createdAt).toLocaleDateString()}
                       </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <a
+                            href={`/payroll/runs/${tx.id}`}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                            aria-label={`View full payroll run ${tx.id}`}
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            View Run
+                          </a>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleViewDetails(tx);
+                            }}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-md transition-colors"
+                            aria-label={`View details for transaction ${tx.id}`}
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            Details
+                          </button>
+                        </div>
+                      </td>
                     </tr>
                   ))
                 )}
@@ -660,6 +715,12 @@ function TransactionHistory() {
           </>
         )}
       </div>
+
+      <TransactionDetailDrawer
+        transaction={selectedTransaction}
+        open={detailDrawerOpen}
+        onOpenChange={setDetailDrawerOpen}
+      />
     </section>
   );
 }

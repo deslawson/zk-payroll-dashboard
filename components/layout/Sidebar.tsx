@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Home,
   Users,
@@ -12,6 +14,9 @@ import {
   Landmark,
   Menu,
   X,
+  AlertTriangle,
+  FileSearch,
+  ClipboardList,
 } from "lucide-react";
 
 const NAV_LINKS = [
@@ -22,33 +27,49 @@ const NAV_LINKS = [
   { href: "/treasury", icon: Landmark, label: "Treasury" },
   { href: "/compliance", icon: Shield, label: "Compliance" },
   { href: "/setup", icon: Building2, label: "Company Setup" },
+  { href: "/incidents", icon: AlertTriangle, label: "Incidents" },
   { href: "/settings", icon: Settings, label: "Settings" },
 ];
 
-function NavLinks({ onClick }: { onClick?: () => void }) {
+function NavLinks({
+  pathname,
+  onClick,
+}: {
+  pathname: string;
+  onClick?: () => void;
+}) {
   return (
     <nav aria-label="Main navigation">
-      {NAV_LINKS.map(({ href, icon: Icon, label }) => (
-        <a
-          key={href}
-          href={href}
-          onClick={onClick}
-          className="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
-        >
-          <Icon className="w-5 h-5 mr-3" aria-hidden="true" />
-          {label}
-        </a>
-      ))}
+      {NAV_LINKS.map(({ href, icon: Icon, label }) => {
+        const active =
+          pathname === href || (href !== "/" && pathname.startsWith(href));
+        return (
+          <Link
+            key={href}
+            href={href}
+            onClick={onClick}
+            className={`flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500 ${
+              active
+                ? "bg-gray-100 border-r-4 border-blue-500 text-gray-700"
+                : ""
+            }`}
+            aria-current={active ? "page" : undefined}
+          >
+            <Icon className="w-5 h-5 mr-3" aria-hidden="true" />
+            {label}
+          </Link>
+        );
+      })}
     </nav>
   );
 }
 
 function Sidebar() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      {/* Mobile hamburger button – visible only below md */}
       <button
         type="button"
         onClick={() => setOpen(true)}
@@ -60,7 +81,6 @@ function Sidebar() {
         <Menu className="w-5 h-5" aria-hidden="true" />
       </button>
 
-      {/* Mobile drawer + overlay – only mounted when open */}
       {open && (
         <>
           <div
@@ -86,17 +106,16 @@ function Sidebar() {
                 <X className="w-5 h-5" aria-hidden="true" />
               </button>
             </div>
-            <NavLinks onClick={() => setOpen(false)} />
+            <NavLinks pathname={pathname} onClick={() => setOpen(false)} />
           </div>
         </>
       )}
 
-      {/* Desktop sidebar */}
       <div className="hidden md:block w-64 bg-white shadow-md flex-shrink-0">
         <div className="p-6">
           <h1 className="text-2xl font-bold text-gray-800">ZK Payroll</h1>
         </div>
-        <NavLinks />
+        <NavLinks pathname={pathname} />
       </div>
     </>
   );
