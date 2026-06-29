@@ -16,7 +16,7 @@ function Header() {
         <Search className="w-4 h-4 text-gray-400 shrink-0 mr-2" aria-hidden="true" />
         <span className="text-xs flex-1 text-gray-500">Search commands...</span>
         <span className="hidden sm:flex items-center gap-0.5 text-[9px] font-bold text-gray-400 bg-white border px-1.5 py-0.5 rounded shadow-sm shrink-0">
-          <span>⌘</span><span>K</span>
+          <span>&#8984;</span><span>K</span>
         </span>
       </button>
 
@@ -40,7 +40,6 @@ function Header() {
           </div>
 
           <span className="hidden sm:inline text-sm font-medium text-gray-700">Admin</span>
-
         </div>
       </div>
     </header>
@@ -48,4 +47,3 @@ function Header() {
 }
 
 export default Header;
-
