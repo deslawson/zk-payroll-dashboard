@@ -57,7 +57,7 @@ describe("Smoke: Mobile navigation regression", () => {
 
       const dialog = screen.getByRole("dialog", { name: /navigation menu/i });
       const activeLink = within(dialog).queryByRole("link", { current: "page" });
-      expect(activeLink).toBeTruthy();
+      expect(activeLink).not.toBeNull();
     });
   });
 

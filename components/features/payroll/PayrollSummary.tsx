@@ -171,8 +171,8 @@ function PayrollSummary() {
 						<p className={`text-sm ${proofToneClass}`} aria-live="polite" role="status">
 							{proofState.message ?? "No proof generated yet."}
 						</p>
-					</article>
-				</section>
+				</article>
+		</section>
 	);
 }
 

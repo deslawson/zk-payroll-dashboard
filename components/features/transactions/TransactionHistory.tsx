@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import {
   ArrowUpRight,
   ArrowDownLeft,
@@ -297,12 +297,12 @@ function TransactionHistory() {
                               type="text"
                               value={renameValue}
                               onChange={(e) => setRenameValue(e.target.value)}
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") handleFinishRename(view.id);
-                                if (e.key === "Escape") setEditingViewId(null);
-                              }}
-                              className="flex-1 min-w-0 rounded border border-gray-300 px-2 py-1 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                            />
+                                                              onKeyDown={(e) => {
+                                                                if (e.key === "Enter") handleFinishRename(view.id);
+                                                                if (e.key === "Escape") setEditingViewId(null);
+                                                              }}
+                                                              className="flex-1 min-w-0 rounded border border-gray-300 px-2 py-1 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                                            />
                             <button
                               type="button"
                               onClick={() => handleFinishRename(view.id)}
@@ -353,14 +353,10 @@ function TransactionHistory() {
             <button
               type="button"
               onClick={() => setShowFilters(!showFilters)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                showFilters
-                  ? "bg-indigo-50 text-indigo-700"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
             >
               <Filter className="w-3.5 h-3.5" />
-              Filters
+              <span className="hidden sm:inline">Filter</span>
               {activeFilterCount > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 text-xs bg-gray-600 text-white rounded-full">
                   {activeFilterCount}

@@ -1,5 +1,7 @@
+
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -55,33 +57,25 @@ const NAV_LINKS = [
   { href: "/settings", icon: Settings, label: "Settings" },
 ];
 
-export function NavLinks({
-  pathname,
-  onClick,
-}: {
-  pathname: string;
-  onClick?: () => void;
-}) {
+function NavLinks({ onClick }: { onClick?: () => void }) {
+  const pathname = usePathname() ?? "/";
   return (
     <nav aria-label="Main navigation" className="mt-6">
       {NAV_LINKS.map(({ href, icon: Icon, label }) => {
-        const active =
-          pathname === href || (href !== "/" && pathname.startsWith(href));
+        const active = pathname === href || (href !== "/" && pathname.startsWith(href));
         return (
-          <Link
+          <a
             key={href}
             href={href}
             onClick={onClick}
-            className={`flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500 ${
-              active
-                ? "bg-gray-100 border-r-4 border-blue-500 text-gray-700"
-                : ""
-            }`}
             aria-current={active ? "page" : undefined}
+            className={`flex items-center px-6 py-3 hover:bg-gray-50 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500 ${
+              active ? "bg-gray-100 text-gray-900 border-r-4 border-blue-500" : "text-gray-600"
+            }`}
           >
             <Icon className="w-5 h-5 mr-3" aria-hidden="true" />
             {label}
-          </Link>
+          </a>
         );
       })}
     </nav>
