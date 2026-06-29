@@ -1,16 +1,18 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
-import PayrollWizard from "@/components/features/payroll/PayrollWizard";
-import PayrollRunDetail from "@/components/features/payroll/PayrollRunDetail";
-import PayrollComparison from "@/components/features/payroll/PayrollComparison";
-import type { PayrollRun } from "@/types/models";
 
 vi.mock("@/components/providers/StellarProvider", () => ({
+  EXPECTED_NETWORK: "TESTNET",
   useStellar: () => ({
     publicKey: "GTEST123",
   }),
   EXPECTED_NETWORK: "TESTNET",
 }));
+
+import { render, screen } from "@testing-library/react";
+import PayrollWizard from "@/components/features/payroll/PayrollWizard";
+import PayrollRunDetail from "@/components/features/payroll/PayrollRunDetail";
+import PayrollComparison from "@/components/features/payroll/PayrollComparison";
+import type { PayrollRun } from "@/types/models";
 
 const mockPayrollRuns: PayrollRun[] = [
   {
