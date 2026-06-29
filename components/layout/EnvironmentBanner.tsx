@@ -65,7 +65,7 @@ export default function EnvironmentBanner() {
       onClick={cycleEnvironment}
       className={`cursor-pointer select-none transition-colors duration-200 text-xs px-4 py-1.5 flex items-center justify-center gap-2.5 font-medium shadow-inner w-full ${currentStyle.bg} ${currentStyle.hover}`}
       title="Click to cycle environments (demo option)"
-      aria-label={`Current environment: ${env}. Click to change.`}
+      aria-label="Cycle environment"
     >
       <span role="status" className="flex items-center gap-2.5">
         <IconComponent className="w-3.5 h-3.5 animate-pulse" aria-hidden="true" />
