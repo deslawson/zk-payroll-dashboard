@@ -8,6 +8,7 @@ import WalletConnect from "@/components/features/wallet/WalletConnect";
 import PayrollSummary from "@/components/features/payroll/PayrollSummary";
 import SystemStatus from "@/components/features/dashboard/SystemStatus";
 import QuickActions from "@/components/features/dashboard/QuickActions";
+import OnboardingChecklistPanel from "@/components/features/dashboard/OnboardingChecklistPanel";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 function DashboardHome() {
@@ -83,6 +84,9 @@ function DashboardHome() {
       </div>
       <ErrorBoundary>
         <QuickActions />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <OnboardingChecklistPanel />
       </ErrorBoundary>
       <ErrorBoundary>
         <SystemStatus />
