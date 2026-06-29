@@ -521,7 +521,75 @@ function TransactionHistory() {
           </div>
         ) : (
           <>
-            <table className="w-full text-left">
+            <ul
+              className="md:hidden divide-y divide-gray-100"
+              aria-label="Payroll transactions"
+              role="list"
+            >
+              {filtered.length === 0 ? (
+                <li className="px-4 py-8 text-center text-sm text-gray-500">
+                  {hasFiltersApplied
+                    ? "No transactions match the current filters. Try broadening your filter criteria."
+                    : "No transactions yet. Process a payroll run to populate the transaction history."}
+                </li>
+              ) : (
+                filtered.map((tx) => (
+                  <li key={tx.id} className="px-4 py-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="flex items-center text-sm font-medium text-gray-900">
+                          {tx.totalAmount > 0 ? (
+                            <ArrowDownLeft
+                              className="w-4 h-4 text-green-600 mr-2"
+                              aria-hidden="true"
+                            />
+                          ) : (
+                            <ArrowUpRight
+                              className="w-4 h-4 text-red-600 mr-2"
+                              aria-hidden="true"
+                            />
+                          )}
+                          Payout · {tx.employeeCount} employees
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">
+                          ${tx.totalAmount.toLocaleString()} · {new Date(tx.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <span
+                        className={`flex-shrink-0 px-2 py-1 text-xs font-medium rounded-full ${
+                          STATUS_STYLES[tx.status] ?? "bg-gray-100 text-gray-600"
+                        }`}
+                      >
+                        {tx.status}
+                      </span>
+                    </div>
+                    <div className="mt-3 flex gap-2">
+                      <a
+                        href={`/payroll/runs/${tx.id}`}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                        aria-label={`View full payroll run ${tx.id}`}
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        View Run
+                      </a>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleViewDetails(tx);
+                        }}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-md transition-colors"
+                        aria-label={`View details for transaction ${tx.id}`}
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        Details
+                      </button>
+                    </div>
+                  </li>
+                ))
+              )}
+            </ul>
+            <table className="hidden md:table w-full text-left">
               <caption className="sr-only">
                 Payroll transactions with filtering and export
               </caption>
