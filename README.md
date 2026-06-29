@@ -120,6 +120,11 @@ Click any transaction row or the "Details" button to open a comprehensive detail
 - **Privacy Protection**: Clear indication of what remains encrypted
 
 For detailed usage instructions, see [Transaction Detail Usage Guide](docs/TRANSACTION_DETAIL_USAGE.md).
+## 📚 Operator docs
+
+- [Dashboard setup guide](docs/SETUP_GUIDE.md)
+- [Admin recovery guide](docs/ADMIN_RECOVERY_GUIDE.md)
+- [Content style guide](docs/CONTENT_STYLE_GUIDE.md)
 
 ## 🤝 Contributing
 
