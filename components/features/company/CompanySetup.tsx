@@ -11,7 +11,11 @@ function isStellarAddress(address: string): boolean {
   return /^G[A-Z2-7]{55}$/.test(address);
 }
 
-function CompanySetup() {
+interface CompanySetupProps {
+  onNext?: () => void;
+}
+
+function CompanySetup({ onNext }: CompanySetupProps = {}) {
   const { isConnected, publicKey } = useWalletStore();
   const setCompany = useCompanyStore((s) => s.setCompany);
 
@@ -50,10 +54,14 @@ function CompanySetup() {
 
       setSubmitted(true);
       setTimeout(() => {
-        window.location.href = "/";
+        if (onNext) {
+          onNext();
+        } else {
+          window.location.href = "/";
+        }
       }, 1200);
     },
-    [validate, publicKey, name, treasury, setCompany],
+    [validate, publicKey, name, treasury, setCompany, onNext],
   );
 
   if (!isConnected) {

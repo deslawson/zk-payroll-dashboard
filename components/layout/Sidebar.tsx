@@ -3,18 +3,22 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { 
-  Home, 
-  Users, 
-  Settings, 
-  History, 
-  Shield, 
-  Play, 
-  Building2, 
-  Landmark, 
-  CalendarDays, 
-  Menu, 
-  X 
+import {
+  Home,
+  Users,
+  Settings,
+  History,
+  Shield,
+  Play,
+  Building2,
+  Landmark,
+  CalendarDays,
+  Menu,
+  X,
+  FileSearch,
+  AlertTriangle,
+  ClipboardList,
+  Upload
 } from 'lucide-react';
 import { getNavigationForRole, ROLE_LABELS } from '@/lib/auth/roles';
 import type { NavigationItem } from '@/lib/auth/roles';
@@ -31,6 +35,10 @@ const icons: Record<NavigationItem['icon'], React.ComponentType<{ className?: st
   building: Building2,
   treasury: Landmark,
   calendar: CalendarDays,
+  'file-search': FileSearch,
+  alert: AlertTriangle,
+  clipboard: ClipboardList,
+  upload: Upload,
 };
 
 // Global static layout links array including your new Payroll Schedule route
