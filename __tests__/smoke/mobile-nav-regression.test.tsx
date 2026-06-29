@@ -82,7 +82,6 @@ describe("Smoke: Mobile navigation regression", () => {
       expect(screen.getByRole("dialog")).toBeInTheDocument();
 
       const closeButton = screen.getByRole("button", { name: /close navigation menu/i });
-      closeButton.focus();
       expect(closeButton).toHaveFocus();
 
       fireEvent.keyDown(closeButton, { key: "Escape" });

@@ -362,12 +362,11 @@ function TransactionHistory() {
               <Filter className="w-3.5 h-3.5" />
               Filters
               {activeFilterCount > 0 && (
-                <span className="ml-1 px-1.5 py-0.5 text-xs bg-indigo-600 text-white rounded-full">
+                <span className="ml-1 px-1.5 py-0.5 text-xs bg-gray-600 text-white rounded-full">
                   {activeFilterCount}
                 </span>
               )}
             </button>
-
             <button
               type="button"
               onClick={handleExport}
@@ -474,6 +473,76 @@ function TransactionHistory() {
                   <X className="w-4 h-4" />
                 </button>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* ── Active filter bar with save button ──────────────────── */}
+        {hasFiltersApplied && (
+          <div className="px-6 py-2 bg-indigo-50 border-b flex items-center justify-between">
+            <p className="text-xs text-indigo-700">
+              {activeFilterCount} filter{activeFilterCount > 1 ? "s" : ""} active
+              {currentView && (
+                <span className="ml-1">
+                  — matching view: <strong>{currentView.name}</strong>
+                </span>
+              )}
+            </p>
+            <div className="flex items-center gap-2">
+              {showSaveDialog ? (
+                <div className="flex items-center gap-1">
+                  <input
+                    type="text"
+                    value={savingName}
+                    onChange={(e) => setSavingName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleSaveView();
+                      if (e.key === "Escape") {
+                        setShowSaveDialog(false);
+                        setSavingName("");
+                      }
+                    }}
+                    placeholder="View name..."
+                    className="w-40 rounded border border-indigo-300 px-2 py-1 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleSaveView}
+                    className="p-1 text-indigo-600 hover:text-indigo-800"
+                    aria-label="Save view"
+                  >
+                    <Check className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowSaveDialog(false);
+                      setSavingName("");
+                    }}
+                    className="p-1 text-gray-400 hover:text-gray-600"
+                    aria-label="Cancel"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowSaveDialog(true)}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium text-indigo-700 hover:bg-indigo-100 transition-colors"
+                >
+                  <Save className="w-3 h-3" />
+                  Save as view
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium text-gray-600 hover:bg-gray-200 transition-colors"
+              >
+                <X className="w-3 h-3" />
+                Clear all
+              </button>
             </div>
           </div>
         )}

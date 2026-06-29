@@ -1,7 +1,4 @@
-"use client";
-
-import { Bell, Search, User } from "lucide-react";
-import { ROLE_LABELS } from "@/lib/auth/roles";
+import { Bell, Search, User } from 'lucide-react';
 
 function Header() {
   const triggerPalette = () => {
@@ -42,6 +39,7 @@ function Header() {
           >
             <User className="w-5 h-5 text-gray-600" />
           </div>
+
           <span className="hidden sm:inline text-sm font-medium text-gray-700">Admin</span>
         </div>
       </div>

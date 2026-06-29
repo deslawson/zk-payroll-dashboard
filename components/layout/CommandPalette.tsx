@@ -221,13 +221,13 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean; o
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <div
       ref={overlayRef}
-      onClick={handleOverlayClick}
-      onKeyDown={handleOverlayKeyDown}
-      tabIndex={-1}
-      className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] px-4 bg-gray-900/60 backdrop-blur-sm transition-opacity"
       role="dialog"
       aria-modal="true"
       aria-labelledby="palette-heading"
+      onClick={handleOverlayClick}
+      onKeyDown={(e) => { if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') onClose(); }}
+      tabIndex={-1}
+      className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] px-4 bg-gray-900/60 backdrop-blur-sm transition-opacity"
     >
       <div className="w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col max-h-[70vh]">
         <div className="px-4 py-3 border-b flex items-center gap-3 bg-gray-50">
@@ -264,7 +264,7 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean; o
         <div className="flex-1 overflow-y-auto p-2 space-y-4">
           {filtered.length === 0 ? (
             <div className="text-center py-12 text-gray-500 text-sm">
-              No actions or navigation found matching &quot;{search}&quot;
+              No actions or navigation found matching &ldquo;{search}&rdquo;
             </div>
           ) : (
             <div>

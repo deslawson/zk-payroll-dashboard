@@ -64,10 +64,10 @@ export default function EnvironmentBanner() {
       role="button"
       tabIndex={0}
       onClick={cycleEnvironment}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); cycleEnvironment(); } }}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') cycleEnvironment(); }}
       className={`cursor-pointer select-none transition-colors duration-200 text-xs px-4 py-1.5 flex items-center justify-center gap-2.5 font-medium shadow-inner ${currentStyle.bg} ${currentStyle.hover}`}
       title="Click to cycle environments (demo option)"
-      aria-label={`Current environment: ${env}. Click to change.`}
+      aria-label="Cycle environment"
     >
       <IconComponent className="w-3.5 h-3.5 animate-pulse" aria-hidden="true" />
       <span className="tracking-wide">{currentStyle.text}</span>
