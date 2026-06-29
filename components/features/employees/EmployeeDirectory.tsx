@@ -29,7 +29,7 @@ function EmployeeDirectory() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [localLoading, setLocalLoading] = useState(
-    typeof process !== 'undefined' && process.env.NODE_ENV === 'test' ? false : true
+    process.env.NODE_ENV === 'test' ? false : true
   );
 
   useEffect(() => {
@@ -71,7 +71,7 @@ function EmployeeDirectory() {
                   key={s}
                   type="button"
                   onClick={() => setStatusFilter(s)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                  className={`px-3 py-1 min-h-[32px] rounded-full text-xs font-medium transition-colors ${
                     statusFilter === s
                       ? "bg-indigo-600 text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"

@@ -112,7 +112,7 @@ function TransactionHistory() {
     setDetailDrawerOpen(true);
   };
   const [isLoading, setIsLoading] = useState(
-    typeof process !== 'undefined' && process.env.NODE_ENV === 'test' ? false : true
+    process.env.NODE_ENV === 'test' ? false : true
   );
 
   useEffect(() => {
