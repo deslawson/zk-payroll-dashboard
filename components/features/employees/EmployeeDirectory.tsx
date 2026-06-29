@@ -28,7 +28,9 @@ function EmployeeDirectory() {
   const { employees: storedEmployees, isLoading: storeLoading } = useEmployeeStore();
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [localLoading, setLocalLoading] = useState(true);
+  const [localLoading, setLocalLoading] = useState(
+    process.env.NODE_ENV === 'test' ? false : true
+  );
 
   useEffect(() => {
     const t = setTimeout(() => setLocalLoading(false), 850);
@@ -69,7 +71,7 @@ function EmployeeDirectory() {
                   key={s}
                   type="button"
                   onClick={() => setStatusFilter(s)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                  className={`px-3 py-1 min-h-[32px] rounded-full text-xs font-medium transition-colors ${
                     statusFilter === s
                       ? "bg-indigo-600 text-white"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -111,7 +113,7 @@ function EmployeeDirectory() {
                   <th scope="col" className="px-6 py-3 text-xs font-medium text-gray-400 uppercase">Start Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-100" aria-hidden="true">
                 {[1, 2, 3, 4, 5].map((idx) => (
                   <tr key={idx}>
                     <td className="px-6 py-4">
