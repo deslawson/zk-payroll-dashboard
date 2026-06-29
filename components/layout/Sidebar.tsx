@@ -1,71 +1,7 @@
 
-'use client';
-
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Home, Users, Settings, History, Shield, Play, Building2, Landmark } from 'lucide-react';
-import { getNavigationForRole, ROLE_LABELS } from '@/lib/auth/roles';
-import type { NavigationItem } from '@/lib/auth/roles';
-import type { UserRole } from '@/types';
-
-const icons: Record<NavigationItem['icon'], React.ComponentType<{ className?: string }>> = {
-  home: Home,
-  users: Users,
-  settings: Settings,
-  history: History,
-  shield: Shield,
-  play: Play,
-  building: Building2,
-  treasury: Landmark,
-};
-
-function Sidebar({ role }: { role: UserRole }) {
-  const pathname = usePathname();
-  const items = getNavigationForRole(role);
-
-  return (
-    <div className="hidden md:block w-64 bg-white shadow-md">
-      <div className="p-6">
-        <h1 className="text-2xl font-bold text-gray-800">ZK Payroll</h1>
-        <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-indigo-600">
-          {ROLE_LABELS[role]} workspace
-        </p>
-      </div>
-      <nav className="mt-6" aria-label={`${ROLE_LABELS[role]} navigation`}>
-        {items.map((item) => {
-          const Icon = icons[item.icon];
-          const disabled = item.access?.[role] === 'disabled';
-          const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
-          const className = active
-            ? 'flex items-center px-6 py-3 text-gray-700 bg-gray-100 border-r-4 border-blue-500'
-            : 'flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900';
-
-          if (disabled) {
-            return (
-              <span
-                key={item.href}
-                className="flex items-center px-6 py-3 text-gray-400 cursor-not-allowed"
-                aria-disabled="true"
-                title={item.disabledReason?.[role]}
-              >
-                <Icon className="w-5 h-5 mr-3" />
-                {item.label}
-              </span>
-            );
-          }
-
-          return (
-            <Link key={item.href} className={className} href={item.href} aria-current={active ? 'page' : undefined}>
-              <Icon className="w-5 h-5 mr-3" />
-              {item.label}
-            </Link>
-          );
-        })}
-      </nav>
-    </div>
-
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
   Home,
@@ -92,19 +28,26 @@ const NAV_LINKS = [
 ];
 
 function NavLinks({ onClick }: { onClick?: () => void }) {
+  const pathname = usePathname() ?? "/";
   return (
     <nav aria-label="Main navigation">
-      {NAV_LINKS.map(({ href, icon: Icon, label }) => (
-        <a
-          key={href}
-          href={href}
-          onClick={onClick}
-          className="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
-        >
-          <Icon className="w-5 h-5 mr-3" aria-hidden="true" />
-          {label}
-        </a>
-      ))}
+      {NAV_LINKS.map(({ href, icon: Icon, label }) => {
+        const active = pathname === href || (href !== "/" && pathname.startsWith(href));
+        return (
+          <a
+            key={href}
+            href={href}
+            onClick={onClick}
+            aria-current={active ? "page" : undefined}
+            className={`flex items-center px-6 py-3 hover:bg-gray-50 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500 ${
+              active ? "bg-gray-100 text-gray-900 border-r-4 border-blue-500" : "text-gray-600"
+            }`}
+          >
+            <Icon className="w-5 h-5 mr-3" aria-hidden="true" />
+            {label}
+          </a>
+        );
+      })}
     </nav>
   );
 }
@@ -165,7 +108,6 @@ function Sidebar() {
         <NavLinks />
       </div>
     </>
->
   );
 }
 

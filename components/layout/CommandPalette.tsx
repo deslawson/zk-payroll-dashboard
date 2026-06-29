@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef, type KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
 import { 
   Search, Keyboard, Users, History, FileText, 
@@ -23,7 +23,6 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean; o
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [role, setRole] = useState<"Admin" | "Employee">("Admin");
-  const overlayRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Focus input when opened
@@ -38,13 +37,6 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean; o
       document.body.style.overflow = "";
     };
   }, [isOpen]);
-
-  // Click outside to close
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === overlayRef.current) {
-      onClose();
-    }
-  };
 
   const commands = useMemo<CommandItem[]>(() => [
     {
@@ -154,15 +146,20 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean; o
   if (!isOpen) return null;
 
   return (
-    <div
-      ref={overlayRef}
-      onClick={handleOverlayClick}
-      className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] px-4 bg-gray-900/60 backdrop-blur-sm transition-opacity"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="palette-heading"
-    >
-      <div className="w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col max-h-[70vh]">
+    <div className="fixed inset-0 z-50">
+      <button
+        type="button"
+        aria-label="Close dialog"
+        onClick={onClose}
+        className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm cursor-default"
+      />
+      <div className="absolute inset-0 flex items-start justify-center pt-[10vh] px-4">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="palette-heading"
+          className="w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col max-h-[70vh]"
+        >
         <div className="px-4 py-3 border-b flex items-center gap-3 bg-gray-50">
           <Search className="w-5 h-5 text-gray-400" />
           <input
@@ -198,7 +195,7 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean; o
         <div className="flex-1 overflow-y-auto p-2 space-y-4">
           {filtered.length === 0 ? (
             <div className="text-center py-12 text-gray-500 text-sm">
-              No actions or navigation found matching "{search}"
+              No actions or navigation found matching &ldquo;{search}&rdquo;
             </div>
           ) : (
             <div>
@@ -240,6 +237,7 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean; o
               </div>
             </div>
           )}
+        </div>
         </div>
       </div>
     </div>
