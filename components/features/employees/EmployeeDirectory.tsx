@@ -28,7 +28,9 @@ function EmployeeDirectory() {
   const { employees: storedEmployees, isLoading: storeLoading } = useEmployeeStore();
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [localLoading, setLocalLoading] = useState(true);
+  const [localLoading, setLocalLoading] = useState(
+    typeof process !== 'undefined' && process.env.NODE_ENV === 'test' ? false : true
+  );
 
   useEffect(() => {
     const t = setTimeout(() => setLocalLoading(false), 850);

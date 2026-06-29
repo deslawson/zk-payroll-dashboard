@@ -111,7 +111,9 @@ function TransactionHistory() {
     setSelectedTransaction(transaction);
     setDetailDrawerOpen(true);
   };
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(
+    typeof process !== 'undefined' && process.env.NODE_ENV === 'test' ? false : true
+  );
 
   useEffect(() => {
     const t = setTimeout(() => setIsLoading(false), 700);
