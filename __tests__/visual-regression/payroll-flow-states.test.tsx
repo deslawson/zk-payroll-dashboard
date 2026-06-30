@@ -9,6 +9,7 @@ vi.mock("@/components/providers/StellarProvider", () => ({
   useStellar: () => ({
     publicKey: "GTEST123",
   }),
+  EXPECTED_NETWORK: "TESTNET",
 }));
 
 const mockPayrollRuns: PayrollRun[] = [
@@ -51,7 +52,7 @@ describe("Visual Regression - Payroll Flow States", () => {
       const { container } = render(
         <PayrollRunDetail run={mockPayrollRuns[0]} />,
       );
-      expect(screen.getByText("verified")).toBeInTheDocument();
+      expect(screen.getByText("Verified")).toBeInTheDocument();
       expect(container).toMatchSnapshot();
     });
   });

@@ -2,9 +2,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   Home,
   Users,
@@ -138,6 +137,13 @@ export function DesktopRoleSidebar({ role }: { role: UserRole }) {
 export default function Sidebar({ role }: { role?: UserRole } = {}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      closeBtnRef.current?.focus();
+    }
+  }, [open]);
 
   return (
     <>
@@ -169,6 +175,7 @@ export default function Sidebar({ role }: { role?: UserRole } = {}) {
             <div className="flex items-center justify-between p-6 border-b">
               <h1 className="text-xl font-bold text-gray-800">ZK Payroll</h1>
               <button
+                ref={closeBtnRef}
                 type="button"
                 onClick={() => setOpen(false)}
                 className="p-1 rounded-md text-gray-500 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
@@ -177,7 +184,7 @@ export default function Sidebar({ role }: { role?: UserRole } = {}) {
                 <X className="w-5 h-5" aria-hidden="true" />
               </button>
             </div>
-            <NavLinks pathname={pathname} onClick={() => setOpen(false)} />
+            <NavLinks onClick={() => setOpen(false)} />
           </div>
         </>
       )}
@@ -190,7 +197,7 @@ export default function Sidebar({ role }: { role?: UserRole } = {}) {
           <div className="p-6">
             <h1 className="text-2xl font-bold text-gray-800">ZK Payroll</h1>
           </div>
-          <NavLinks pathname={pathname} />
+          <NavLinks />
         </div>
       )}
     </>
