@@ -39,6 +39,12 @@ const employeeSession: SessionPayload = {
   expiresAt: Date.now() + 86_400_000,
 };
 
+const auditorSession: SessionPayload = {
+  publicKey: EMPLOYEE_KEY,
+  role: 'auditor',
+  expiresAt: Date.now() + 86_400_000,
+};
+
 function createRequest(path: string, hasCookie: boolean = false): NextRequest {
   const request = new NextRequest(new URL(`http://localhost:3000${path}`));
   if (hasCookie) {
